@@ -80,11 +80,30 @@ object s4ti_ch02 {
   
   unicodeSumRec("Hello")                          //> res8: Long = 9415087488
   
-  //10. Write a function that computes xn, where n is an integer. Use the following recursive definition:
-  //  • xn = y2 if n is even and positive, where y = xn / 2.
-  //  • xn = x·xn – 1 if n is odd and positive.
-  //  • x0 = 1.
-  //  • xn = 1 / x–n if n is negative.
+  //10. Write a function that computes x^n, where n is an integer. Use the following recursive definition:
+  //  • x^n = y^2 if n is even and positive, where y = x^(n / 2).
+  //  • x^n = x·x^(n–1) if n is odd and positive.
+  //  • x^0 = 1.
+  //  • x^n = 1/x^(–n) if n is negative.
   // Don’t use a return statement.
+   def myPow(x: BigDecimal, n: Int): BigDecimal = {
+     n match {
+       case y if (y > 0) && (y % 2 == 0) => myPow(x, n/2) * myPow(x, n/2)
+       case y if (y > 0) && (y % 2 == 1) => x * myPow(x, n-1)
+       case 0 => 1
+       case y if y < 0 => BigDecimal(1)/myPow(x, -1*n)
+       case _ => throw new IllegalArgumentException
+     }
+   }                                              //> myPow: (x: BigDecimal, n: Int)BigDecimal
+  
+  
+  (-3 to 3) map (myPow(2, _)) foreach println     //> 0.125
+                                                  //| 0.25
+                                                  //| 0.5
+                                                  //| 1
+                                                  //| 2
+                                                  //| 4
+                                                  //| 8
+  
   
 }
